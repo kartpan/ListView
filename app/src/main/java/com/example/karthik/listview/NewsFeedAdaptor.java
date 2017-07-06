@@ -1,7 +1,6 @@
 package com.example.karthik.listview;
 
 
-import java.util.List;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,6 +8,8 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import java.util.List;
 
 public class NewsFeedAdaptor extends BaseAdapter {
     private Context mContext;
@@ -45,13 +46,16 @@ public class NewsFeedAdaptor extends BaseAdapter {
             convertView = inflater.inflate(R.layout.list_content, null);
         }
 
-        ImageView ivAvatar = (ImageView)convertView.findViewById(R.id.imgAvatar);
-        ivAvatar.setImageBitmap(entry.getAvatar());
+        ImageView ivAvatar = (ImageView) convertView.findViewById(R.id.imgAvatar);
 
-        TextView tvTitle = (TextView)convertView.findViewById(R.id.tvTitle);
+        if (ivAvatar != null) {
+            new DownloadImages(ivAvatar).execute(entry.getUrl());
+        }
+
+        TextView tvTitle = (TextView) convertView.findViewById(R.id.tvTitle);
         tvTitle.setText(entry.getuTitle());
 
-        TextView tvDescription = (TextView)convertView.findViewById(R.id.tvDescription);
+        TextView tvDescription = (TextView) convertView.findViewById(R.id.tvDescription);
         tvDescription.setText(entry.getDescription());
 
 

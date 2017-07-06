@@ -1,26 +1,25 @@
 package com.example.karthik.listview;
 
 
-import android.graphics.Bitmap;
-
 public class NewsFeed {
 
-    private Bitmap uAvatar;
+    private String uUrl;
     private String uTitle;
     private String uDescription;
 
-    public NewsFeed(Bitmap avatar, String title, String description) {
-        uAvatar = avatar;
+    public NewsFeed(String url, String title, String description) {
+        uUrl = url;
         uTitle = title;
         uDescription = description;
 
     }
 
-    public void setAvatar(Bitmap avatar) {
-        uAvatar = avatar;
+    public void setUrl(String url) {
+        uUrl = url;
     }
-    public Bitmap getAvatar() {
-        return uAvatar;
+
+    public String getUrl() {
+        return uUrl;
     }
 
     public void setTitle(String title) {
