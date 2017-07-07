@@ -2,4 +2,58 @@
     <string name="app_name">News Feeds</string>
     <string name="action_search">Search</string>
     <string name="action_load">Load DB</string>
+
+    <array name="title">
+        <item>Late British couple who left $6m to Assisi Hospice, NKF, SPCA became Singaporeans in
+            the 1970s
+        </item>
+        <item>PropertyGuru\'s Melhuish doesn\'t believe in \'unicorns\' even as portal nears $1b
+            mark
+        </item>
+        <item>Vietnam: ESP Capital invests in women-focused careers platform Canavi</item>
+        <item>Makansutra: Big Lazy Chop boasts excellent zi char</item>
+    </array>
+    <array name="description">
+        <item>A generous couple, the late Mr Gerry Essery and Mrs Jo Essery, has left behind a $6
+            million legacy that will be divided equally among the Assisi Hospice, National Kidney
+            Foundation (NKF) and the Society for the Prevention of Cruelty to Animals (SPCA).
+        </item>
+        <item>In fact, when it comes to the tech scene, Melhuish, who stepped down as chief
+            executive of the realty portal late last year, handing over day-to-day operations to
+            Hari V. Krishnan, says ‘Unicorn is among his least favourite words’ to describe
+            successful startups.
+        </item>
+        <item>ESP Capital, the new homegrown venture capital firm in Vietnam, has invested in
+            Canavi, a recruitment platform for women.
+        </item>
+        <item>Zi char meals are the greatest family makan institution in Singapore. This is where
+            families head to when everyone cannot agree on what to eat at weekend gatherings.
+        </item>
+
+    </array>
+    <array name="image_url">
+        <item>
+            http://www.straitstimes.com/sites/default/files/styles/article_pictrure_780x520_/public/articles/2017/06/29/jo_gerry_3.jpg?itok=52aSb55g
+        </item>
+        <item>http://cdn.dealstreetasia.com/uploads/2017/06/Steve-Melhuish.jpg?resize=750,417</item>
+        <item>http://cdn.dealstreetasia.com/uploads/2017/07/canavi.jpg?resize=750,417</item>
+        <item>
+            http://www.tnp.sg/sites/default/files/styles/rl780/public/articles/2017/06/29/np_20170629_makan29_1580315.jpg?itok=8xN3UXgL
+        </item>
+
+    </array>
+    <array name="url">
+        <item>
+            http://www.straitstimes.com/singapore/generous-couple-leaves-6-million-donation-to-assisi-hospice-nkf-and-spca
+        </item>
+        <item>
+            https://www.dealstreetasia.com/stories/we-are-close-to-hitting-1b-valuation-mark-steve-melhuish-propertyguru-75995/
+        </item>
+        <item>
+            https://www.dealstreetasia.com/stories/vietnam-esp-capital-women-career-canavi-76629/
+        </item>
+        <item>http://www.tnp.sg/lifestyle/makan/makansutra-big-lazy-chop-boasts-excellent-zi-char
+        </item>
+    </array>
+
 </resources>

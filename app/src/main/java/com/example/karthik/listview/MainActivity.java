@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -13,15 +14,20 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import java.net.URL;
+import com.wdullaer.swipeactionadapter.SwipeActionAdapter;
+import com.wdullaer.swipeactionadapter.SwipeDirection;
+
 import java.util.ArrayList;
 import java.util.List;
 
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements
+        SwipeActionAdapter.SwipeActionListener {
 
     public static final String EXTRA_MESSAGE = "";
     public SwipeRefreshLayout swipe;
+    protected SwipeActionAdapter swipeAdapter;
+    protected List<NewsArticles> listArticles;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,16 +58,17 @@ public class MainActivity extends AppCompatActivity {
 
         ListView listView = (ListView) findViewById(R.id.listView);
 
-        List<NewsFeed> listNewsFeed = new ArrayList<NewsFeed>();
 
         Cursor newsCursor = newsDB.getAllNews();
 
-        List<NewsArticles> listArticles = new ArrayList<NewsArticles>();
+        listArticles = new ArrayList<NewsArticles>();
 
         try {
             while (newsCursor.moveToNext()) {
 
-                listArticles.add(new NewsArticles(newsCursor.getString(newsCursor.getColumnIndex("title")),
+                listArticles.add(new NewsArticles(
+                        newsCursor.getInt(newsCursor.getColumnIndex("id")),
+                        newsCursor.getString(newsCursor.getColumnIndex("title")),
                         newsCursor.getString(newsCursor.getColumnIndex("subtitle")),
                         newsCursor.getString(newsCursor.getColumnIndex("url")),
                         newsCursor.getString(newsCursor.getColumnIndex("imageurl"))));
@@ -71,34 +78,25 @@ public class MainActivity extends AppCompatActivity {
             newsCursor.close();
         }
 
-        final String[] arrayUrl = new String[listArticles.size()];
+        NewsFeedAdaptor adapter = new NewsFeedAdaptor(this, listArticles);
+        swipeAdapter = new SwipeActionAdapter(adapter);
+        swipeAdapter.setSwipeActionListener(this)
+                .setDimBackgrounds(true)
+                .setListView(listView);
+        listView.setAdapter(swipeAdapter);
 
-        int count = 0;
-
-
-        for (NewsArticles articles : listArticles) {
-            try {
-
-                URL url = new URL(articles.getImageURL());
-                listNewsFeed.add(new NewsFeed(
-                        articles.getImageURL(),
-                        articles.getTitle(),
-                        articles.getSubTitle()));
-                arrayUrl[count++] = articles.getURL();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
+        // Set backgrounds for the swipe directions
+        swipeAdapter.addBackground(SwipeDirection.DIRECTION_FAR_LEFT, R.layout.row_bg_left)
+                .addBackground(SwipeDirection.DIRECTION_NORMAL_LEFT, R.layout.row_bg_left);
 
 
-        NewsFeedAdaptor adapter = new NewsFeedAdaptor(this, listNewsFeed);
-        listView.setAdapter(adapter);
+        //listView.setAdapter(adapter);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
 
                 Intent intent = new Intent(view.getContext(), NewsDetails.class);
-                String url = arrayUrl[i];
+                String url = listArticles.get(i).getURL();
                 intent.putExtra(EXTRA_MESSAGE, url);
                 startActivity(intent);
             }
@@ -123,44 +121,20 @@ public class MainActivity extends AppCompatActivity {
 
                 newsDB.deleteAllNews();
 
-                newsDB.insertNews(
-                        "Late British couple who left $6m to Assisi Hospice, NKF, SPCA became" +
-                                " Singaporeans in the 1970s",
-                        "A generous couple, the late Mr Gerry Essery and Mrs Jo Essery, has left " +
-                                "behind a $6 million legacy that will be divided equally among the Assisi " +
-                                "Hospice, National Kidney Foundation (NKF) and the Society for the " +
-                                "Prevention of Cruelty to Animals (SPCA).",
-                        "http://www.straitstimes.com/singapore/generous-couple-leaves-6-million-donation-to-assisi-hospice-nkf-and-spca",
-                        "http://www.straitstimes.com/sites/default/files/styles/article_pictrure_780x520_/public/articles/2017/06/29/jo_gerry_3.jpg?itok=52aSb55g");
-
-                newsDB.insertNews(
-                        "PropertyGuru's Melhuish doesn't believe in 'unicorns' even as portal " +
-                                "nears $1b mark",
-                        "In fact, when it comes to the tech scene, Melhuish, who stepped down as chief" +
-                                " executive of the realty portal late last year, handing over day-to-day " +
-                                "operations to Hari V. Krishnan, says ‘Unicorn is among his least favourite " +
-                                "words’ to describe successful startups.",
-                        "https://www.dealstreetasia.com/stories/we-are-close-to-hitting-1b-valuation-mark-steve-melhuish-propertyguru-75995/",
-                        "http://cdn.dealstreetasia.com/uploads/2017/06/Steve-Melhuish.jpg?resize=750,417");
-
-                newsDB.insertNews(
-                        "Vietnam: ESP Capital invests in women-focused careers platform Canavi",
-                        "ESP Capital, the new homegrown venture capital firm in Vietnam, " +
-                                "has invested in Canavi, a recruitment platform for women.",
-                        "https://www.dealstreetasia.com/stories/vietnam-esp-capital-women-career-canavi-76629/",
-                        "http://cdn.dealstreetasia.com/uploads/2017/07/canavi.jpg?resize=750,417");
+                String[] title = getResources().getStringArray(R.array.title);
+                String[] description = getResources().getStringArray(R.array.description);
+                String[] image_url = getResources().getStringArray(R.array.image_url);
+                String[] url = getResources().getStringArray(R.array.url);
 
 
-                newsDB.insertNews(
-                        "Makansutra: Big Lazy Chop boasts excellent zi char",
-                        "Zi char meals are the greatest family makan institution in Singapore. " +
-                                "This is where families head to when everyone cannot agree on what " +
-                                "to eat at weekend gatherings.",
-                        "http://www.tnp.sg/lifestyle/makan/makansutra-big-lazy-chop-boasts-excellent-zi-char",
-                        "http://www.tnp.sg/sites/default/files/styles/rl780/public/articles/2017/06/29/np_20170629_makan29_1580315.jpg?itok=8xN3UXgL");
+                for (int count = 0; count < title.length; count++) {
 
+                    newsDB.insertNews(title[count], description[count], url[count], image_url[count]);
+
+                }
 
                 Toast.makeText(this, "Loaded data to DB", Toast.LENGTH_SHORT).show();
+                loadData();
 
                 return true;
 
@@ -174,6 +148,45 @@ public class MainActivity extends AppCompatActivity {
                 return super.onOptionsItemSelected(item);
 
         }
+    }
+
+    @Override
+    public boolean hasActions(int position, SwipeDirection direction) {
+        return direction.isLeft();
+    }
+
+    @Override
+    public boolean shouldDismiss(int position, SwipeDirection direction) {
+
+        Log.i("Test:", position + "position");
+        return direction == SwipeDirection.DIRECTION_FAR_LEFT;
+    }
+
+    @Override
+    public void onSwipe(int[] positionList, SwipeDirection[] directionList) {
+        for (int i = 0; i < positionList.length; i++) {
+            SwipeDirection direction = directionList[i];
+            int position = positionList[i];
+
+            switch (direction) {
+                case DIRECTION_FAR_LEFT:
+                    deleteRecord(listArticles.get(position).getId());
+                    break;
+                case DIRECTION_NORMAL_LEFT:
+                    deleteRecord(listArticles.get(position).getId());
+                    break;
+            }
+            loadData();
+        }
+    }
+
+    public void deleteRecord(int position) {
+
+        //Delete from data base
+
+        NewsDBHelper newsDB = new NewsDBHelper(this);
+        newsDB.deleteNews(position);
+
     }
 
 }

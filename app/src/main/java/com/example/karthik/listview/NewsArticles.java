@@ -3,17 +3,27 @@ package com.example.karthik.listview;
 
 public class NewsArticles {
 
+    private int uId;
     private String uTitle;
     private String uSubTitle;
     private String uURL;
     private String uImageURL;
 
-    public NewsArticles(String title, String subtitle, String url, String imageurl) {
+    public NewsArticles(int id, String title, String subtitle, String url, String imageurl) {
+        uId = id;
         uTitle = title;
         uSubTitle = subtitle;
         uURL = url;
         uImageURL = imageurl;
 
+    }
+
+    public void setId(int id) {
+        uId = id;
+    }
+
+    public int getId() {
+        return uId;
     }
 
     public void setTitle(String title) {

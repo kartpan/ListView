@@ -13,9 +13,9 @@ import java.util.List;
 
 public class NewsFeedAdaptor extends BaseAdapter {
     private Context mContext;
-    private List<NewsFeed> listNewsFeed;
+    private List<NewsArticles> listNewsFeed;
 
-    public NewsFeedAdaptor(Context context, List<NewsFeed> list) {
+    public NewsFeedAdaptor(Context context, List<NewsArticles> list) {
         mContext = context;
         listNewsFeed = list;
     }
@@ -38,7 +38,7 @@ public class NewsFeedAdaptor extends BaseAdapter {
     @Override
     public View getView(int pos, View convertView, ViewGroup parent) {
         // get selected entry
-        NewsFeed entry = listNewsFeed.get(pos);
+        NewsArticles entry = listNewsFeed.get(pos);
 
         // inflating list view layout if null
         if(convertView == null) {
@@ -49,14 +49,14 @@ public class NewsFeedAdaptor extends BaseAdapter {
         ImageView ivAvatar = (ImageView) convertView.findViewById(R.id.imgAvatar);
 
         if (ivAvatar != null) {
-            new DownloadImages(ivAvatar).execute(entry.getUrl());
+            new DownloadImages(ivAvatar).execute(entry.getImageURL());
         }
 
         TextView tvTitle = (TextView) convertView.findViewById(R.id.tvTitle);
-        tvTitle.setText(entry.getuTitle());
+        tvTitle.setText(entry.getTitle());
 
         TextView tvDescription = (TextView) convertView.findViewById(R.id.tvDescription);
-        tvDescription.setText(entry.getDescription());
+        tvDescription.setText(entry.getSubTitle());
 
 
         return convertView;

@@ -15,7 +15,7 @@ public class NewsDBHelper extends SQLiteOpenHelper {
     public static final String DATABASE_NAME = "NewsDB.db";
     private static final int DATABASE_VERSION = 1;
     public static final String NEWS_TABLE_NAME = "news";
-    public static final String NEWS_COLUMN_ID = "_id";
+    public static final String NEWS_COLUMN_ID = "id";
     public static final String NEWS_COLUMN_TITLE = "title";
     public static final String NEWS_COLUMN_SUBTITLE = "subtitle";
     public static final String NEWS_COLUMN_URL = "url";
