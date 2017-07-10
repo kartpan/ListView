@@ -1,16 +1,21 @@
 package com.example.karthik.listview;
 
+import android.app.SearchManager;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -22,7 +27,8 @@ import java.util.List;
 
 
 public class MainActivity extends AppCompatActivity implements
-        SwipeActionAdapter.SwipeActionListener {
+        SwipeActionAdapter.SwipeActionListener,
+        SearchView.OnQueryTextListener {
 
     public static final String EXTRA_MESSAGE = "";
     public SwipeRefreshLayout swipe;
@@ -78,29 +84,42 @@ public class MainActivity extends AppCompatActivity implements
             newsCursor.close();
         }
 
-        NewsFeedAdaptor adapter = new NewsFeedAdaptor(this, listArticles);
-        swipeAdapter = new SwipeActionAdapter(adapter);
-        swipeAdapter.setSwipeActionListener(this)
-                .setDimBackgrounds(true)
-                .setListView(listView);
-        listView.setAdapter(swipeAdapter);
+        ImageView nodata = (ImageView) findViewById(R.id.nodataview);
+        LinearLayout content = (LinearLayout) findViewById(R.id.listlayout);
 
-        // Set backgrounds for the swipe directions
-        swipeAdapter.addBackground(SwipeDirection.DIRECTION_FAR_LEFT, R.layout.row_bg_left)
-                .addBackground(SwipeDirection.DIRECTION_NORMAL_LEFT, R.layout.row_bg_left);
+        if (listArticles.size() == 0) {
+
+            nodata.setVisibility(View.VISIBLE);
+            content.setVisibility(View.GONE);
+        } else {
+
+            nodata.setVisibility(View.GONE);
+            content.setVisibility(View.VISIBLE);
+            NewsFeedAdaptor adapter = new NewsFeedAdaptor(this, listArticles);
+            swipeAdapter = new SwipeActionAdapter(adapter);
+            swipeAdapter.setSwipeActionListener(this)
+                    .setDimBackgrounds(true)
+                    .setListView(listView);
+            listView.setAdapter(swipeAdapter);
+
+            // Set backgrounds for the swipe directions
+            swipeAdapter.addBackground(SwipeDirection.DIRECTION_FAR_LEFT, R.layout.row_bg_left)
+                    .addBackground(SwipeDirection.DIRECTION_NORMAL_LEFT, R.layout.row_bg_left);
 
 
-        //listView.setAdapter(adapter);
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+            //listView.setAdapter(adapter);
+            listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
 
-                Intent intent = new Intent(view.getContext(), NewsDetails.class);
-                String url = listArticles.get(i).getURL();
-                intent.putExtra(EXTRA_MESSAGE, url);
-                startActivity(intent);
-            }
-        });
+                    Intent intent = new Intent(view.getContext(), NewsDetails.class);
+                    String url = listArticles.get(i).getURL();
+                    intent.putExtra(EXTRA_MESSAGE, url);
+                    startActivity(intent);
+                }
+            });
+
+        }
 
     }
 
@@ -109,9 +128,16 @@ public class MainActivity extends AppCompatActivity implements
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu, menu);
-        return true;
-    }
 
+        final SearchView searchView = (SearchView) MenuItemCompat.getActionView(menu.findItem(R.id.action_search));
+        searchView.setQueryHint(getResources().getString(R.string.search_hint));
+        SearchManager searchManager = (SearchManager) getSystemService(SEARCH_SERVICE);
+        searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
+        searchView.setOnQueryTextListener(this);
+
+        return true;
+
+    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -139,7 +165,6 @@ public class MainActivity extends AppCompatActivity implements
                 return true;
 
             case R.id.action_search:
-                Toast.makeText(this,"Search menu",Toast.LENGTH_SHORT).show();
                 return true;
 
             default:
@@ -149,6 +174,26 @@ public class MainActivity extends AppCompatActivity implements
 
         }
     }
+
+    // Methods from SearchView.OnQueryTextListener
+
+    @Override
+    public boolean onQueryTextSubmit(String query) {
+
+        Intent intent = new Intent(this, SearchListing.class);
+        intent.putExtra(EXTRA_MESSAGE, query);
+        startActivity(intent);
+
+        return false;
+    }
+
+    @Override
+    public boolean onQueryTextChange(String newText) {
+        // This method can be used to dynamically referesh the list view
+        return true;
+    }
+
+    // Methods from SwipeActionAdapter.SwipeActionListener
 
     @Override
     public boolean hasActions(int position, SwipeDirection direction) {
@@ -183,7 +228,6 @@ public class MainActivity extends AppCompatActivity implements
     public void deleteRecord(int position) {
 
         //Delete from data base
-
         NewsDBHelper newsDB = new NewsDBHelper(this);
         newsDB.deleteNews(position);
 

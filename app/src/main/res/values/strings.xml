@@ -2,6 +2,7 @@
     <string name="app_name">News Feeds</string>
     <string name="action_search">Search</string>
     <string name="action_load">Load DB</string>
+    <string name="search_hint">Search for a news ... </string>
 
     <array name="title">
         <item>Late British couple who left $6m to Assisi Hospice, NKF, SPCA became Singaporeans in
@@ -12,6 +13,9 @@
         </item>
         <item>Vietnam: ESP Capital invests in women-focused careers platform Canavi</item>
         <item>Makansutra: Big Lazy Chop boasts excellent zi char</item>
+        <item>Trump\’s Son Met With Russian Lawyer After Being Promised Damaging Information on
+            Clinton
+        </item>
     </array>
     <array name="description">
         <item>A generous couple, the late Mr Gerry Essery and Mrs Jo Essery, has left behind a $6
@@ -29,6 +33,12 @@
         <item>Zi char meals are the greatest family makan institution in Singapore. This is where
             families head to when everyone cannot agree on what to eat at weekend gatherings.
         </item>
+        <item>
+            President Trump’s eldest son, Donald Trump Jr., was promised damaging information about
+            Hillary Clinton before agreeing to meet with a Kremlin-connected Russian lawyer during
+            the 2016 campaign, according to three advisers to the White House briefed on the
+            meeting and two others with knowledge of it.
+        </item>
 
     </array>
     <array name="image_url">
@@ -39,6 +49,9 @@
         <item>http://cdn.dealstreetasia.com/uploads/2017/07/canavi.jpg?resize=750,417</item>
         <item>
             http://www.tnp.sg/sites/default/files/styles/rl780/public/articles/2017/06/29/np_20170629_makan29_1580315.jpg?itok=8xN3UXgL
+        </item>
+        <item>
+            https://static01.nyt.com/images/2017/07/10/us/10TRUMPRUSSIA-jr-01/10TRUMPRUSSIA-jr-01-superJumbo.jpg
         </item>
 
     </array>
@@ -53,6 +66,9 @@
             https://www.dealstreetasia.com/stories/vietnam-esp-capital-women-career-canavi-76629/
         </item>
         <item>http://www.tnp.sg/lifestyle/makan/makansutra-big-lazy-chop-boasts-excellent-zi-char
+        </item>
+        <item>
+            https://www.nytimes.com/2017/07/09/us/politics/trump-russia-kushner-manafort.html
         </item>
     </array>
 

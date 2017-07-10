@@ -73,6 +73,14 @@ public class NewsDBHelper extends SQLiteOpenHelper {
         return res;
     }
 
+    public Cursor searchNews(String query) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor res = db.rawQuery("SELECT * FROM " + NEWS_TABLE_NAME + " WHERE " +
+                NEWS_COLUMN_TITLE + " like '%" + query + "%'", null);
+        return res;
+    }
+
+
     public Cursor getAllNews() {
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor res = db.rawQuery("SELECT * FROM " + NEWS_TABLE_NAME, null);
