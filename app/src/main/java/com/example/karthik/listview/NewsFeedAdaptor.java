@@ -9,6 +9,8 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+
 import java.util.List;
 
 public class NewsFeedAdaptor extends BaseAdapter {
@@ -48,9 +50,16 @@ public class NewsFeedAdaptor extends BaseAdapter {
 
         ImageView ivAvatar = (ImageView) convertView.findViewById(R.id.imgAvatar);
 
-        if (ivAvatar != null) {
-            new DownloadImages(ivAvatar).execute(entry.getImageURL());
-        }
+        Glide.with(mContext)
+                .load(entry.getImageURL())
+                .placeholder(R.drawable.placeholder)
+                .error(R.drawable.placeholder)
+                .fitCenter()
+                .into(ivAvatar);
+
+//        if (ivAvatar != null) {
+//            new DownloadImages(ivAvatar).execute(entry.getImageURL());
+//        }
 
         TextView tvTitle = (TextView) convertView.findViewById(R.id.tvTitle);
         tvTitle.setText(entry.getTitle());
