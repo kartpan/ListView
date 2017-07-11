@@ -8,5 +8,13 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+    <style name="MyToolbar" parent="AppTheme">
+        <item name="searchViewStyle">@style/searchStyle</item>
+    </style>
+
+    <style name="searchStyle" parent="Widget.AppCompat.SearchView.ActionBar">
+        <item name="queryHint">@string/search_hint</item>
+        <item name="searchIcon">@null</item>
+    </style>
 
 </resources>
