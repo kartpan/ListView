@@ -57,6 +57,8 @@ public class NewsFeedAdaptor extends BaseAdapter {
                 .fitCenter()
                 .into(ivAvatar);
 
+        // Using ASync Task for image loading (drawback is caching not available and memory handling
+
 //        if (ivAvatar != null) {
 //            new DownloadImages(ivAvatar).execute(entry.getImageURL());
 //        }

@@ -1,9 +1,11 @@
 package com.example.karthik.listview;
 
 import android.app.SearchManager;
+import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -143,25 +145,7 @@ public class MainActivity extends AppCompatActivity implements
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_load:
-                NewsDBHelper newsDB = new NewsDBHelper(this);
-
-                newsDB.deleteAllNews();
-
-                String[] title = getResources().getStringArray(R.array.title);
-                String[] description = getResources().getStringArray(R.array.description);
-                String[] image_url = getResources().getStringArray(R.array.image_url);
-                String[] url = getResources().getStringArray(R.array.url);
-
-
-                for (int count = 0; count < title.length; count++) {
-
-                    newsDB.insertNews(title[count], description[count], url[count], image_url[count]);
-
-                }
-
-                Toast.makeText(this, "Loaded data to DB", Toast.LENGTH_SHORT).show();
-                loadData();
-
+                loadDatafromDB();
                 return true;
 
             case R.id.action_search:
@@ -173,6 +157,43 @@ public class MainActivity extends AppCompatActivity implements
                 return super.onOptionsItemSelected(item);
 
         }
+    }
+
+    public void loadDatafromDB() {
+
+        NewsDBHelper newsDB = new NewsDBHelper(this);
+
+        newsDB.deleteAllNews();
+
+        String[] title = getResources().getStringArray(R.array.title);
+        String[] description = getResources().getStringArray(R.array.description);
+        String[] image_url = getResources().getStringArray(R.array.image_url);
+        String[] url = getResources().getStringArray(R.array.url);
+
+        for (int count = 0; count < title.length; count++) {
+
+            newsDB.insertNews(title[count], description[count], url[count], image_url[count]);
+
+        }
+
+        final Context context = this;
+
+        View parentLayout = findViewById(R.id.rootView);
+
+        Snackbar.make(parentLayout, "Loading completed...", Snackbar.LENGTH_LONG)
+                .setAction("CLEAR", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+
+                        // Delete file
+                        NewsDBHelper newsDB = new NewsDBHelper(context);
+                        newsDB.deleteAllNews();
+                        Toast.makeText(context, "Cleared data ...", Toast.LENGTH_SHORT).show();
+                        loadData();
+                    }
+                })
+                .show();
+        loadData();
     }
 
     // Methods from SearchView.OnQueryTextListener
