@@ -2,6 +2,7 @@
     <string name="app_name">News Feeds</string>
     <string name="action_search">Search</string>
     <string name="action_load">Load DB</string>
+    <string name="delete_text">Delete</string>
     <string name="search_hint">Search for a news ... </string>
 
     <array name="title">

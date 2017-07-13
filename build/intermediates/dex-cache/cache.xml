@@ -7,7 +7,7 @@
         jumboMode="true"
         optimize="true"
         revision="26.0.0"
-        sha1="5bfb10a2396d709e5386c82887240d9b7a15e2b8">
+        sha1="7bc0b99e2832f7ad84a19e6d0cbcf81767507f0f">
         <dex dex="/Users/karthik/GitHub/ListView/app/build/intermediates/transforms/dex/debug/folders/1000/10000/instant-run-bootstrap_f7d90486a40f7547bfa2ccbf3bf92b4ae7ea31a2/classes.dex" />
     </item>
     <item
@@ -18,15 +18,6 @@
         revision="26.0.0"
         sha1="3be78ebc2706b2e1fe2f12d5726887a92d6c183b">
         <dex dex="/Users/karthik/GitHub/ListView/app/build/intermediates/transforms/dex/debug/folders/1000/10000/instant-run_7ecb2bad0beb9812e32bc29177166e920a8a8483/classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="/Users/karthik/.gradle/caches/modules-2/files-2.1/com.github.bumptech.glide/glide/3.8.0/9bada650e1afe9c6174ddc0d113c1fce4dc26fe0/glide-3.8.0.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="26.0.0"
-        sha1="9bada650e1afe9c6174ddc0d113c1fce4dc26fe0">
-        <dex dex="/Users/karthik/GitHub/ListView/app/build/intermediates/transforms/dex/debug/folders/1000/10/glide-3.8.0_238198b5389b34fd05973122ea70d551e628eaba/classes.dex" />
     </item>
 
 </items>

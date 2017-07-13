@@ -2,6 +2,7 @@ package com.example.karthik.listview;
 
 
 import android.content.Context;
+import android.util.SparseBooleanArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,6 +17,7 @@ import java.util.List;
 public class NewsFeedAdaptor extends BaseAdapter {
     private Context mContext;
     private List<NewsArticles> listNewsFeed;
+    private SparseBooleanArray mSelectedItemsIds;
 
     public NewsFeedAdaptor(Context context, List<NewsArticles> list) {
         mContext = context;

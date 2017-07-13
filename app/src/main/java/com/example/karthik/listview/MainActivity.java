@@ -12,9 +12,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.ActionMode;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -25,6 +27,7 @@ import com.wdullaer.swipeactionadapter.SwipeActionAdapter;
 import com.wdullaer.swipeactionadapter.SwipeDirection;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 
@@ -36,6 +39,7 @@ public class MainActivity extends AppCompatActivity implements
     public SwipeRefreshLayout swipe;
     protected SwipeActionAdapter swipeAdapter;
     protected List<NewsArticles> listArticles;
+    protected List<Integer> positions;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,6 +48,7 @@ public class MainActivity extends AppCompatActivity implements
 
         Toolbar myToolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(myToolbar);
+        positions = new ArrayList<Integer>();
 
         loadData();
 
@@ -64,7 +69,10 @@ public class MainActivity extends AppCompatActivity implements
 
         NewsDBHelper newsDB = new NewsDBHelper(this);
 
-        ListView listView = (ListView) findViewById(R.id.listView);
+        final ListView listView = (ListView) findViewById(R.id.listView);
+
+        listView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
+        listView.setItemsCanFocus(false);
 
 
         Cursor newsCursor = newsDB.getAllNews();
@@ -97,7 +105,7 @@ public class MainActivity extends AppCompatActivity implements
 
             nodata.setVisibility(View.GONE);
             content.setVisibility(View.VISIBLE);
-            NewsFeedAdaptor adapter = new NewsFeedAdaptor(this, listArticles);
+            final NewsFeedAdaptor adapter = new NewsFeedAdaptor(this, listArticles);
             swipeAdapter = new SwipeActionAdapter(adapter);
             swipeAdapter.setSwipeActionListener(this)
                     .setDimBackgrounds(true)
@@ -108,8 +116,6 @@ public class MainActivity extends AppCompatActivity implements
             swipeAdapter.addBackground(SwipeDirection.DIRECTION_FAR_LEFT, R.layout.row_bg_left)
                     .addBackground(SwipeDirection.DIRECTION_NORMAL_LEFT, R.layout.row_bg_left);
 
-
-            //listView.setAdapter(adapter);
             listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
@@ -120,6 +126,66 @@ public class MainActivity extends AppCompatActivity implements
                     startActivity(intent);
                 }
             });
+
+
+            listView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE_MODAL);
+            listView.setMultiChoiceModeListener(new AbsListView.MultiChoiceModeListener() {
+
+                @Override
+                public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
+                    return false;
+                }
+
+                @Override
+                public void onDestroyActionMode(ActionMode mode) {
+                    //editListAdapter.removeSelection();
+
+                }
+
+                @Override
+                public boolean onCreateActionMode(ActionMode mode, Menu menu) {
+                    mode.getMenuInflater().inflate(R.menu.delete, menu);
+                    return true;
+                }
+
+                @Override
+                public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
+                    switch (item.getItemId()) {
+                        case R.id.delete_mode:
+                            for (Iterator<Integer> iter = positions.listIterator(); iter.hasNext(); ) {
+                                int currentPosition = iter.next();
+                                deleteRecord(listArticles.get(currentPosition).getId());
+                            }
+                            loadData();
+                            mode.finish();
+                            positions.clear();
+                            return true;
+                        default:
+                            return false;
+                    }
+                }
+
+                @Override
+                public void onItemCheckedStateChanged(ActionMode mode, int position, long id,
+                                                      boolean checked) {
+                    int checkedCount = listView.getCheckedItemCount();
+                    positions.add(position);
+                    listView.getChildAt(position).setBackgroundColor(getResources().getColor(R.color.colorListSelectedBG));
+
+                    if (!checked) {
+
+                        for (Iterator<Integer> iter = positions.listIterator(); iter.hasNext(); ) {
+                            int a = iter.next();
+                            if (a == position) {
+                                listView.getChildAt(position).setBackgroundColor(getResources().getColor(R.color.colorListBG));
+                                iter.remove();
+                            }
+                        }
+                    }
+                    mode.setTitle(checkedCount + " selected");
+                }
+            });
+
 
         }
 
