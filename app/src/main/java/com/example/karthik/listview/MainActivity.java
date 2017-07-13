@@ -40,13 +40,14 @@ public class MainActivity extends AppCompatActivity implements
     protected SwipeActionAdapter swipeAdapter;
     protected List<NewsArticles> listArticles;
     protected List<Integer> positions;
+    protected Toolbar myToolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        Toolbar myToolbar = (Toolbar) findViewById(R.id.toolbar);
+        myToolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(myToolbar);
         positions = new ArrayList<Integer>();
 
@@ -127,7 +128,6 @@ public class MainActivity extends AppCompatActivity implements
                 }
             });
 
-
             listView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE_MODAL);
             listView.setMultiChoiceModeListener(new AbsListView.MultiChoiceModeListener() {
 
@@ -138,13 +138,13 @@ public class MainActivity extends AppCompatActivity implements
 
                 @Override
                 public void onDestroyActionMode(ActionMode mode) {
-                    //editListAdapter.removeSelection();
-
+                    //Reset the selected state colors and set toolbar
+                    loadData();
                 }
 
                 @Override
                 public boolean onCreateActionMode(ActionMode mode, Menu menu) {
-                    mode.getMenuInflater().inflate(R.menu.delete, menu);
+                    getMenuInflater().inflate(R.menu.delete, menu);
                     return true;
                 }
 
